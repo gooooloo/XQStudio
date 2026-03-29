@@ -5,6 +5,7 @@ import 'package:xqstudio/core/models/piece.dart';
 import 'package:xqstudio/core/models/play_node.dart';
 import 'package:xqstudio/core/rules/move_notation.dart';
 import 'package:xqstudio/core/rules/move_validator.dart';
+import 'package:xqstudio/core/models/game_metadata.dart';
 import 'package:xqstudio/core/xqf/xqf_reader.dart';
 
 /// Central orchestrator for a xiangqi game session.
@@ -16,6 +17,7 @@ import 'package:xqstudio/core/xqf/xqf_reader.dart';
 class GameController {
   PlayNode _root;
   PlayNode _currentNode;
+  GameMetadata? metadata;
 
   /// Cached main-line path from root to the last move, for quick navigation.
   List<PlayNode> _mainLine = [];
@@ -31,7 +33,8 @@ class GameController {
   /// Creates a game controller from pre-built game data (e.g., loaded from .xqf).
   GameController.fromGameData(GameData gameData)
       : _root = gameData.playTree,
-        _currentNode = gameData.playTree {
+        _currentNode = gameData.playTree,
+        metadata = gameData.metadata {
     _rebuildMainLine();
   }
 

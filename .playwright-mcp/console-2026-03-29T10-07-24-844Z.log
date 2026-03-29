@@ -1,0 +1,2 @@
+[    1299ms] [WARNING] [.WebGL-0x1f5c00118200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels @ http://localhost:8090/:0
+[    1651ms] [WARNING] [.WebGL-0x1f5c00118200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat) @ http://localhost:8090/:0

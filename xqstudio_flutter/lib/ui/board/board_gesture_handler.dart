@@ -1,50 +1,50 @@
 import 'dart:ui';
 
 import 'package:xqstudio/core/models/position.dart';
+import 'package:xqstudio/ui/board/board_painter.dart';
 
 /// Converts tap pixel coordinates to board (x, y) coordinates.
 class BoardGestureHandler {
   BoardGestureHandler._();
 
-  /// Convert a tap position to board coordinates.
+  /// Hit-test a tap at [tapPosition] within a board of [boardSize].
   ///
-  /// The board grid spans the full [boardSize] with 8 cell widths (9 columns)
-  /// and 9 cell heights (10 rows). Returns `null` if the tap is too far from
-  /// any grid intersection (> 0.5 cells away).
-  ///
-  /// When [reversed] is true the board is viewed from Black's perspective,
-  /// so coordinates are flipped.
+  /// Uses the same layout math as [BoardPainter] (with padding cells).
+  /// Returns `null` if the tap is outside the board or too far from any point.
   static Position? hitTest(
     Offset tapPosition,
     Size boardSize, {
     bool reversed = false,
   }) {
-    final cellWidth = boardSize.width / 8;
-    final cellHeight = boardSize.height / 9;
+    const totalCellsW = BoardPainter.totalCellsW;
+    const totalCellsH = BoardPainter.totalCellsH;
 
-    // Map pixel to fractional grid coordinates.
-    final fx = tapPosition.dx / cellWidth;
-    final fy = tapPosition.dy / cellHeight;
+    final cw = boardSize.width / totalCellsW;
+    final ch = boardSize.height / totalCellsH;
+    final cs = cw < ch ? cw : ch;
 
-    // Round to nearest intersection.
-    final gx = fx.round();
-    final gy = fy.round();
+    final gridW = 8 * cs;
+    final gridH = 9 * cs;
+    final ox = (boardSize.width - gridW) / 2;
+    final oy = (boardSize.height - gridH) / 2;
 
-    // Reject if too far from intersection (> 0.5 cell).
-    if ((fx - gx).abs() > 0.5 || (fy - gy).abs() > 0.5) return null;
+    // Convert tap to grid-relative coordinates
+    final gx = (tapPosition.dx - ox) / cs;
+    final gy = (tapPosition.dy - oy) / cs;
 
-    // Reject out-of-range.
-    if (gx < 0 || gx > 8 || gy < 0 || gy > 9) return null;
+    // Snap to nearest intersection
+    final sx = gx.round();
+    final sy = gy.round();
 
-    // Screen Y=0 is the top of the widget.
-    // In normal (Red-at-bottom) orientation, screen top = board Y=9.
-    int x = gx;
-    int y = 9 - gy;
+    // Check bounds
+    if (sx < 0 || sx > 8 || sy < 0 || sy > 9) return null;
 
-    if (reversed) {
-      x = 8 - x;
-      y = 9 - y;
-    }
+    // Check proximity (within 0.5 cells)
+    if ((gx - sx).abs() > 0.5 || (gy - sy).abs() > 0.5) return null;
+
+    // Convert screen coords to board coords
+    final x = reversed ? 8 - sx : sx;
+    final y = reversed ? sy : 9 - sy;
 
     return Position(x, y);
   }

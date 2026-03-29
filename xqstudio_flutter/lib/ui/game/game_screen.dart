@@ -11,8 +11,8 @@ import 'package:xqstudio/ui/game/variation_panel.dart';
 
 /// Main game screen with responsive layout.
 ///
-/// - Wide (>800px): board on left, tabbed panel on right.
-/// - Narrow (<=800px): board on top, tabbed panel on bottom.
+/// - Wide (>700px): board on left, panel on right.
+/// - Narrow (<=700px): board on top, panel on bottom.
 class GameScreen extends ConsumerStatefulWidget {
   const GameScreen({super.key});
 
@@ -28,17 +28,23 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final ctrl = gameState.controller;
 
     if (_selectedXY == null) {
-      // Select a piece if there's one at this position
       final pieceIndex = ctrl.currentBoard.pieceIndexAt(xy);
       if (pieceIndex != 0) {
-        // Only select own pieces
         final isRed = Piece.sideOf(pieceIndex) == Side.red;
         if ((ctrl.isRedTurn && isRed) || (!ctrl.isRedTurn && !isRed)) {
           setState(() => _selectedXY = xy);
         }
       }
     } else {
-      // Try to move
+      // Try to re-select own piece
+      final pieceIndex = ctrl.currentBoard.pieceIndexAt(xy);
+      if (pieceIndex != 0) {
+        final isRed = Piece.sideOf(pieceIndex) == Side.red;
+        if ((ctrl.isRedTurn && isRed) || (!ctrl.isRedTurn && !isRed)) {
+          setState(() => _selectedXY = xy);
+          return;
+        }
+      }
       ref.read(gameProvider.notifier).makeMove(_selectedXY!, xy);
       setState(() => _selectedXY = null);
     }
@@ -51,7 +57,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWide = constraints.maxWidth > 800;
+        final isWide = constraints.maxWidth > 700;
         final board = BoardWidget(
           boardState: ctrl.currentBoard,
           selectedXY: _selectedXY,
@@ -61,20 +67,37 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               ctrl.currentNode.xyt != 0 ? ctrl.currentNode.xyt : null,
           onTap: _onBoardTap,
         );
-        final panels = _buildPanels();
 
         if (isWide) {
           return Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(child: Center(child: board)),
-              SizedBox(width: 300, child: panels),
+              // Board takes up the left side
+              Expanded(
+                flex: 3,
+                child: Container(
+                  color: const Color(0xFFD2B48C),
+                  child: board,
+                ),
+              ),
+              // Right panel
+              SizedBox(
+                width: 320,
+                child: _buildPanels(),
+              ),
             ],
           );
         } else {
           return Column(
             children: [
-              Expanded(child: Center(child: board)),
-              SizedBox(height: 250, child: panels),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  color: const Color(0xFFD2B48C),
+                  child: board,
+                ),
+              ),
+              SizedBox(height: 280, child: _buildPanels()),
             ],
           );
         }
@@ -83,35 +106,42 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 
   Widget _buildPanels() {
-    return const Column(
-      children: [
-        GameNavigationToolbar(),
-        Expanded(
-          child: DefaultTabController(
-            length: 3,
-            child: Column(
-              children: [
-                TabBar(
-                  tabs: [
-                    Tab(text: '走法'),
-                    Tab(text: '变着'),
-                    Tab(text: '注释'),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      MoveListPanel(),
-                      VariationPanel(),
-                      RemarkPanel(),
+    return Container(
+      color: const Color(0xFFFAF0E6),
+      child: const Column(
+        children: [
+          SizedBox(height: 4),
+          GameNavigationToolbar(),
+          Divider(height: 1),
+          Expanded(
+            child: DefaultTabController(
+              length: 3,
+              child: Column(
+                children: [
+                  TabBar(
+                    labelColor: Color(0xFF5C3317),
+                    indicatorColor: Color(0xFF5C3317),
+                    tabs: [
+                      Tab(text: '走法'),
+                      Tab(text: '变着'),
+                      Tab(text: '注释'),
                     ],
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        MoveListPanel(),
+                        VariationPanel(),
+                        RemarkPanel(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
