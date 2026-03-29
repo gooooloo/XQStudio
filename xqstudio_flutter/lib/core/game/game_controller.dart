@@ -244,9 +244,8 @@ class GameController {
     final prevSibling = varNode.lParent!;
 
     // Find the parent that owns the lChild chain
-    PlayNode? chainParent;
     if (prevSibling.rParent != null) {
-      chainParent = prevSibling.rParent;
+      // chainParent is prevSibling.rParent — used implicitly via node pointers
     }
 
     // Swap: remove varNode from rChild chain and put it in place of prevSibling

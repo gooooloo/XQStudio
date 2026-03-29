@@ -610,7 +610,6 @@ void main() {
       pieces[21] = 48; // black king at (4,8)
       pieces[1] = 44; // red che at (4,4) — only blocker
       pieces[26] = 46; // black pao at (4,6)
-      final board = BoardState.fromList(pieces);
       // Black pao at (4,6) captures red che at (4,4) with screen... wait, pao needs
       // exactly 1 screen. Between (4,6) and (4,4) going down: no pieces. 0 screens.
       // Invalid pao capture. Let me restructure.
@@ -622,7 +621,7 @@ void main() {
       pieces2[21] = 48; // black king at (4,8)
       pieces2[10] = 45; // red pao at (4,5) — only blocker
       pieces2[17] = 47; // black che at (4,7)
-      final board2 = BoardState.fromList(pieces2);
+      BoardState.fromList(pieces2);
       // Black che captures red pao: (4,7)->(4,5). After: black che at (4,5).
       // Kings at (4,2) and (4,8). Black che at (4,5) is between. Not facing. Legal!
       // The capturing piece replaces the blocker... that's always safe.

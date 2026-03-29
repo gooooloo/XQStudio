@@ -204,7 +204,7 @@ class XqfWriter {
 
     if (hasRemark) {
       childTag |= 0x20;
-      final remarkSize = (remarkBytes!.length + secKeys.keyRMKSize) & 0xFFFFFFFF;
+      final remarkSize = (remarkBytes.length + secKeys.keyRMKSize) & 0xFFFFFFFF;
 
       // Write 4 base bytes + 4 remark size bytes = 8 bytes
       final rec = Uint8List(8);
@@ -219,7 +219,7 @@ class XqfWriter {
       writer.writeEncrypted(rec);
 
       // Write remark content
-      writer.writeEncrypted(Uint8List.fromList(remarkBytes!));
+      writer.writeEncrypted(Uint8List.fromList(remarkBytes));
     } else {
       // Write 4 base bytes only (no remark size)
       final rec = Uint8List(4);

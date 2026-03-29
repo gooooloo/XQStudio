@@ -13,12 +13,16 @@ class GameSearch {
     if (criteria.playerName != null) {
       final name = criteria.playerName!.toLowerCase();
       if (!game.metadata.redPlayer.toLowerCase().contains(name) &&
-          !game.metadata.blkPlayer.toLowerCase().contains(name)) return false;
+          !game.metadata.blkPlayer.toLowerCase().contains(name)) {
+        return false;
+      }
     }
     if (criteria.title != null) {
       final title = criteria.title!.toLowerCase();
       if (!game.metadata.titleA.toLowerCase().contains(title) &&
-          !game.metadata.titleB.toLowerCase().contains(title)) return false;
+          !game.metadata.titleB.toLowerCase().contains(title)) {
+        return false;
+      }
     }
     if (criteria.result != null && game.metadata.result != criteria.result) {
       return false;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:xqstudio/core/models/game_metadata.dart';
 import 'package:xqstudio/core/xqf/xqf_reader.dart';
@@ -38,7 +39,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
-      body: const GameScreen(),
+      body: CallbackShortcuts(
+        bindings: <ShortcutActivator, VoidCallback>{
+          const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
+              ref.read(gameProvider.notifier).goToPrev(),
+          const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
+              ref.read(gameProvider.notifier).goToNext(),
+          const SingleActivator(LogicalKeyboardKey.home): () =>
+              ref.read(gameProvider.notifier).goToFirst(),
+          const SingleActivator(LogicalKeyboardKey.end): () =>
+              ref.read(gameProvider.notifier).goToLast(),
+          const SingleActivator(LogicalKeyboardKey.keyZ, control: true): () =>
+              ref.read(gameProvider.notifier).undoMove(),
+          const SingleActivator(LogicalKeyboardKey.keyO, control: true): _openFile,
+          const SingleActivator(LogicalKeyboardKey.keyS, control: true): _saveFile,
+          const SingleActivator(LogicalKeyboardKey.keyN, control: true): _newGame,
+        },
+        child: const Focus(
+          autofocus: true,
+          child: GameScreen(),
+        ),
+      ),
     );
   }
 

@@ -1,4 +1,3 @@
-import 'package:xqstudio/core/constants.dart';
 import 'package:xqstudio/core/models/board_state.dart';
 import 'package:xqstudio/core/models/piece.dart';
 import 'package:xqstudio/core/models/position.dart';

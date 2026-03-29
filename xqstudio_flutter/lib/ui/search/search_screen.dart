@@ -95,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<GameResult?>(
-                  value: _selectedResult,
+                  initialValue: _selectedResult,
                   decoration: const InputDecoration(
                     labelText: '对局结果',
                     border: OutlineInputBorder(),

@@ -74,7 +74,7 @@ class BoardPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final cw = _cellWidth(size);
-    final ch = _cellHeight(size);
+    // _cellHeight not needed here; vertical spacing is derived from _toScreen.
 
     // Horizontal lines (10 rows).
     for (var row = 0; row <= 9; row++) {

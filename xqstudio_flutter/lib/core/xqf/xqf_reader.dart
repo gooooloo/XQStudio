@@ -106,8 +106,8 @@ class XqfReader {
       // In Delphi: QiziXY[((i + KeyXY) mod 32) + 1] := XQFHead.QiziXY[i]
       // where i goes 1..32. Our header.qiziXY is 0-based (0..31).
       for (var i = 0; i < 32; i++) {
-        final delphi_i = i + 1; // 1-based
-        final destIndex = ((delphi_i + keyXY) % 32) + 1;
+        final delphiI = i + 1; // 1-based
+        final destIndex = ((delphiI + keyXY) % 32) + 1;
         result[destIndex] = header.qiziXY[i];
       }
     } else {
@@ -179,8 +179,8 @@ class XqfReader {
   ) {
     // Read base fields: XYf(1), XYt(1), ChildTag(1), Reserved(1) = 4 bytes
     final base = reader.readDecrypted(4);
-    var xyf = base[0];
-    var xyt = base[1];
+    final xyf = base[0];
+    final xyt = base[1];
     var childTag = base[2];
     // base[3] is Reserved, ignored
 

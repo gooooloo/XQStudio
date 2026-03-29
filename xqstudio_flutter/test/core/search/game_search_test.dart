@@ -50,7 +50,7 @@ void main() {
 
     test('search by result', () {
       final results = GameSearch.search(
-          games, SearchCriteria(result: GameResult.redWin));
+          games, const SearchCriteria(result: GameResult.redWin));
       expect(results.length, 1);
     });
 
@@ -63,7 +63,7 @@ void main() {
     test('combined criteria', () {
       final results = GameSearch.search(
           games,
-          SearchCriteria(
+          const SearchCriteria(
               playerName: '张三', result: GameResult.draw));
       expect(results.length, 1);
     });

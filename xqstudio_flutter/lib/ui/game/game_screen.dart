@@ -83,22 +83,22 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 
   Widget _buildPanels() {
-    return Column(
+    return const Column(
       children: [
-        const GameNavigationToolbar(),
+        GameNavigationToolbar(),
         Expanded(
           child: DefaultTabController(
             length: 3,
             child: Column(
               children: [
-                const TabBar(
+                TabBar(
                   tabs: [
                     Tab(text: '走法'),
                     Tab(text: '变着'),
                     Tab(text: '注释'),
                   ],
                 ),
-                const Expanded(
+                Expanded(
                   child: TabBarView(
                     children: [
                       MoveListPanel(),

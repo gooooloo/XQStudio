@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import 'package:xqstudio/core/models/board_state.dart';
-import 'package:xqstudio/core/models/position.dart';
 import 'package:xqstudio/ui/board/board_gesture_handler.dart';
 import 'package:xqstudio/ui/board/board_painter.dart';
 

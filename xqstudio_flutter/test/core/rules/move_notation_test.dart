@@ -110,7 +110,7 @@ void main() {
 
       test('帅五进一 — king advances one step', () {
         // Custom board: red king at center (40, y=0), need space to move.
-        final board = customBoard({
+        customBoard({
           5: 41, // red shuai at x=4, y=1
           21: 48, // black jiang at x=4, y=8
           // Add a piece to block king-facing.
@@ -421,7 +421,7 @@ void main() {
       });
 
       test('前兵/中兵/后兵 — 3 red pawns in same column', () {
-        final board = customBoard({
+        customBoard({
           12: 87, // y=7 (front)
           13: 85, // y=5 (middle)
           14: 83, // y=3... wait, red bing at y=3 hasn't crossed river.

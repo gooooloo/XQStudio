@@ -91,8 +91,8 @@ List<int> _encryptPiecePositions(List<int> pieceXY, int keyXY) {
   // where i goes 1..32 (Delphi). Our output is 0-based (0..31).
   final encrypted = List<int>.filled(32, 0);
   for (var i = 0; i < 32; i++) {
-    final delphi_i = i + 1;
-    final srcIndex = ((delphi_i + keyXY) % 32) + 1;
+    final delphiI = i + 1;
+    final srcIndex = ((delphiI + keyXY) % 32) + 1;
     var val = pieceXY[srcIndex];
     // Captured pieces get random value >= 90
     if (val == kCapturedXY) val = 90;
