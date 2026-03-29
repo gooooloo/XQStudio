@@ -71,6 +71,11 @@ class GameNotifier extends Notifier<GameState> {
     state.controller.deleteCurrentMove();
     state = GameState(state.controller, state.version + 1);
   }
+
+  void switchVariation(int index) {
+    state.controller.switchVariation(index);
+    state = GameState(state.controller, state.version + 1);
+  }
 }
 
 final gameProvider = NotifierProvider<GameNotifier, GameState>(GameNotifier.new);
